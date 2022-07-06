@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Terraform stuff
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+
+# misc
+
+tmp
+local_db
+# cypress
+frontend/cypress/screenshots

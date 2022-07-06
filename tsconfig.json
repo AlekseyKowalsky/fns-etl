@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+
+    "removeComments": true,
+    "declaration": true,
+    "sourceMap": true,
+    "incremental": true,
+    "noImplicitAny": false,
+
+    "baseUrl": "./",
+    "outDir": "./dist",
+
+    "strict": true,
+    "allowSyntheticDefaultImports": true
+  }
+}

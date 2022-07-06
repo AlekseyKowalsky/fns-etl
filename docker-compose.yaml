@@ -1,0 +1,66 @@
+version: '3'
+services:
+
+  mongo-fns:
+    image: mongo
+    restart: unless-stopped
+    volumes:
+      - ${VOLUME_ROOT}/db:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dev
+      MONGO_INITDB_ROOT_PASSWORD: dev
+      MONGO_INITDB_DATABASE: FNS
+    logging:
+      driver: none
+
+  mongo-express-fns:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: dev
+      ME_CONFIG_MONGODB_ADMINPASSWORD: dev
+      ME_CONFIG_MONGODB_SERVER: mongo-FNS
+    logging:
+      driver: none
+    depends_on:
+      - mongo-fns
+
+  egrul-loader:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.full.egrul
+    volumes:
+      - ./src:/usr/src/app/src
+    ports:
+      - "4001:4000"
+      - "9229:9229"
+    depends_on:
+      - mongo-fns
+
+  egrip-loader:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.full.egrip
+    volumes:
+      - ./src:/usr/src/app/src
+    ports:
+      - "4002:4000"
+      - "9230:9229"
+    depends_on:
+      - mongo-fns
+
+  fns:
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.updater
+    volumes:
+      - ./src:/usr/src/app/src
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo-fns

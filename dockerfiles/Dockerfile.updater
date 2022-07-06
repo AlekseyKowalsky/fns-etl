@@ -1,0 +1,16 @@
+FROM node:14.15.3-alpine3.12
+
+COPY ../package.json \
+	 yarn.lock \
+	 tsconfig.json \
+	 tsconfig.build.json \
+     index.ts \
+     /usr/src/app/
+
+ADD ../.env /usr/src/app/
+
+RUN cd /usr/src/app/ && yarn install --frozen-lockfile
+
+WORKDIR /usr/src/app/
+
+CMD npm start

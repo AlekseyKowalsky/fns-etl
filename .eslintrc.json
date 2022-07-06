@@ -1,0 +1,60 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/warnings"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "import"
+  ],
+  "rules": {
+
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "always",
+        "trailingComma": "all",
+        "singleQuote": false,
+        "printWidth": 140,
+        "tabWidth": 4,
+        "semi": false
+      },
+      {
+        "usePrettierrc": false
+      }
+    ],
+    "no-unused-vars": "off",
+    "class-methods-use-this": "off",
+    "no-useless-constructor": "off",
+    "no-continue": "off",
+    "no-plusplus": "off",
+    "no-return-assign": "off",
+    "no-undef": "off",
+    "no-case-declarations": "off",
+    "no-prototype-builtins":"off",
+    "import/extensions": [
+      "error",
+      "never",
+      {
+        "json": "always",
+        "test": "always"
+      }
+    ],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "."
+        ]
+      }
+    ]
+  }
+}
