@@ -1,44 +1,29 @@
-# rosanketa
+# rosanketa-FNS-ms
 
-## Accessing to preview
+## Запуски
+Перед запуском проверьте,чтобы в корне был файл .env с содержанием,
+соответсствующим fns-etl/src/Environment/EnvVarsDTO.ts 
+### Локальный запуск контейнеров с монгой и интерфейсом к ней
+VOLUME_ROOT=*path* docker-compose up
 
-- http://beta.rosanketa.com/
-- http://rosanketa.com/
+где *path* абсолютный путь до тома с данными базы
 
-## Running the entire project locally
+### Запуск скриптов загрузки полных сведений
+node --expose-gc -r ts-node/register src/BootstrapFullEgripData.ts
 
-Build and start using docker:
+Скрипт управляет сборкой мусора, поэтому флаг --expose-gc обязателен.
 
-```
-docker compose build
-docker compose up
-```
+Скрипт будет загружать полные данные по реестру,хранящиеся 
+в папке FULL текущего года(согласно формату указанному в док-ции ФНС)  
 
-## Deploy
-# production release:
-- create release folow this schema:
-    - `Tag version` v*
-    - `Release title` same as in tag version
-    - `Describe release` 
-        - RAN-*
-        - RAN-*
-        - ...
-    - example:
-        - v1.0.0
-        - v1.0.0
-        - RAN-116 Сделать production deploy на digital ocean
-- _after the release has been created, the deployment will start automatically_
-        
-# beta deploy:       
-- create release folow this schema:
-    - `Tag version` beta-v(version future production release)_(version beta deploy, in other words - cannary release)
-    - `Release title` same as in tag version
-    - `Describe release` 
-        - RAN-*
-        - RAN-*
-        - ...
-    - example:
-        - beta-v1.0.0_1
-        - beta-v1.0.0_1
-        - RAN-116 Сделать production deploy на digital ocean
-- _after the release has been created, the deployment will start automatically_
+
+### Запуск сервиса ежедневных обновлений
+node --expose-gc -r ts-node/register src/BootstrapUpdater.ts
+
+Крон паттерны  для апдейта ИГРИП и ЕГРЮЛ лучше установить разные, чтобы джобы не нагружали сервис одновременно.
+
+### Запуск API
+ts-node src/BootstrapAPI.ts
+
+## Концептуальная схема сервиса
+![Screenshot](image.png)
